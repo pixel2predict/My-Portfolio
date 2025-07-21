@@ -1118,22 +1118,20 @@
 
           <h3 class="h3 form-title">Contact Form</h3>
 
-          <form action="#" class="form" data-form>
-
+          <form id="contact-form" class="form" data-form>
             <div class="input-wrapper">
-              <input type="text" name="fullname" class="form-input" placeholder="Full name" required data-form-input>
-
-              <input type="email" name="email" class="form-input" placeholder="Email address" required data-form-input>
+              <input type="text" name="fullname" class="form-input" placeholder="Full name" required>
+              <input type="email" name="email" class="form-input" placeholder="Email address" required>
             </div>
 
-            <textarea name="message" class="form-input" placeholder="Your Message" required data-form-input></textarea>
+            <textarea name="message" class="form-input" placeholder="Your Message" required></textarea>
 
-            <button class="form-btn" type="submit" disabled data-form-btn>
-              <ion-icon name="paper-plane"></ion-icon>
-              <span>Send Message</span>
-            </button>
+             <button class="form-btn" type="submit" id="send-btn">
+                 <ion-icon name="paper-plane"></ion-icon>
+                 <span>Send Message</span>
+                    </button>
+            </form>
 
-          </form>
 
         </section>
 
@@ -1142,13 +1140,7 @@
     </div>
 
   </main>
-
-
-
-
-
-
-  <!--
+ <!--
     - custom js link
   -->
   <script src="./assets/js/script.js"></script>
@@ -1159,6 +1151,35 @@
   <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
   <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
 
+<!-- EmailJS SDK -->
+<script src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>
+<script>
+  (function(){
+    emailjs.init("9ncbtVm82ESiYSxBY"); // Replace with your public key
+  })();
+</script>
+
+<script>
+  document.getElementById("contact-form").addEventListener("submit", function(event) {
+    event.preventDefault();
+
+    // Disable button to prevent duplicate submits
+    document.getElementById("send-btn").disabled = true;
+
+    emailjs.sendForm("service_jxr104q", "template_r3a8r9d", this)
+      .then(function(response) {
+        alert("Message sent successfully!");
+        document.getElementById("contact-form").reset();
+        document.getElementById("send-btn").disabled = false;
+      }, function(error) {
+        alert("Failed to send message. Please try again.");
+        document.getElementById("send-btn").disabled = false;
+      });
+  });
+</script>
+
+
 </body>
 
 </html>
+
