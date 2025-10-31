@@ -992,32 +992,46 @@
   <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
   <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
 
-<!-- EmailJS SDK -->
+
+<!-- ✅ Include EmailJS SDK -->
 <script src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>
+
 <script>
-  (function(){
-    emailjs.init("lV0s0np9Q3EcT99oy"); // Replace with your public key
+  // ✅ Initialize EmailJS
+  (function() {
+    emailjs.init("lV0s0np9Q3EcT99oy"); // Replace with your actual public key
   })();
+
+  // ✅ Wait until DOM is ready
+  window.onload = function() {
+    const form = document.getElementById("contact-form");
+    const sendBtn = document.getElementById("send-btn");
+
+    form.addEventListener("submit", function(event) {
+      event.preventDefault();
+
+      // Disable button to prevent multiple submissions
+      sendBtn.disabled = true;
+      sendBtn.textContent = "Sending...";
+
+      // ✅ Send the form
+      emailjs.sendForm("service_6joa0pi", "template_b67u89f", this)
+        .then(function(response) {
+          alert("✅ Message sent successfully!");
+          form.reset();
+          sendBtn.disabled = false;
+          sendBtn.textContent = "Send";
+        })
+        .catch(function(error) {
+          console.error("EmailJS Error:", error);
+          alert("❌ Failed to send message. Please try again.");
+          sendBtn.disabled = false;
+          sendBtn.textContent = "Send";
+        });
+    });
+  };
 </script>
 
-<script>
-  document.getElementById("contact-form").addEventListener("submit", function(event) {
-    event.preventDefault();
-
-    // Disable button to prevent duplicate submits
-    document.getElementById("send-btn").disabled = true;
-
-    emailjs.sendForm("service_6joa0pi", "template_b67u89f", this)
-      .then(function(response) {
-        alert("Message sent successfully!");
-        document.getElementById("contact-form").reset();
-        document.getElementById("send-btn").disabled = false;
-      }, function(error) {
-        alert("Failed to send message. Please try again.");
-        document.getElementById("send-btn").disabled = false;
-      });
-  });
-</script>
 
 
 </body>
